@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contrôle Mariage Patricia & Rudy </title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display&display=swap');
+    body { font-family: 'Playfair Display', serif; text-align: center; background: #fdf6f0; margin: 0; padding: 40px; color: #5d4037; }
+    h1 { font-family: 'Dancing Script', cursive; font-size: 2.8em; color: #8b5a2b; margin: 20px 0; }
+    .card { max-width: 420px; margin: 30px auto; padding: 35px; background: white; border-radius: 20px; box-shadow: 0 12px 40px rgba(0,0,0,0.1); }
+    .valid { color: #2e7d32; font-size: 1.9em; font-weight: bold; }
+    .invalid { color: #c62828; font-size: 1.9em; font-weight: bold; }
+    .name { font-size: 1.5em; margin: 15px 0; color: #8b5a2b; }
+    button { margin-top: 25px; padding: 14px 28px; font-size: 1.1em; border: none; border-radius: 50px; background: #8b5a2b; color: white; cursor: pointer; }
+    button:hover { background: #6d4c41; }
+    footer { margin-top: 60px; font-size: 0.9em; color: #999; }
+  </style>
+</head>
+<body>
+  <h1>Mariage<br><small>Patricia & Rudy</small></h1>
+  <div class="card">
+    <div id="result">Scan en cours...</div>
+    <button onclick="window.location.href='?'">Scanner un autre</button>
+  </div>
+  <footer>Contrôle d'entrée – 10 aôut 2026</footer>
+
+  <script>
+    // === COLLER VOTRE LISTE DE CODES ICI ===
+    const invitations = {
+      "MARIAGE-001": "Jean Dupont",
+      "MARIAGE-002": "Marie Lefèvre",
+      "MARIAGE-003": "Famille Martin",
+      // ... 147 autres lignes
+    };
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const result = document.getElementById('result');
+
+    if (!code) {
+      result.innerHTML = '<p class="invalid">Aucun code détecté</p>';
+    } else if (invitations[code]) {
+      result.innerHTML = `
+        <p class="valid">✓ INVITATION VALIDE</p>
+        <p class="name">${invitations[code]}</p>
+        <p>Code: <strong>${code}</strong></p>
+      `;
+    } else {
+      result.innerHTML = '<p class="invalid">✗ Code invalide ou expiré</p>';
+    }
+  </script>
+</body>
+</html>
