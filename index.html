@@ -24,7 +24,7 @@
     <div id="content">
       <p>Entrez le mot de passe de contrôle :</p>
       <input type="password" id="password" placeholder="Mot de passe" />
-      <button id="loginBtn">Accéder</button>
+      <button onclick="checkPassword()">Accéder</button>
     </div>
   </div>
   <footer>Contrôle d'entrée – 10 janvier 2026</footer>
@@ -187,22 +187,7 @@
   "INVITE-1491": "Mbane 50"
 };
 
-  document.addEventListener('DOMContentLoaded', function() {
-      const loginBtn = document.getElementById('loginBtn');
-      const passwordInput = document.getElementById('password');
-
-      // Appui sur Entrée
-      passwordInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-          checkPassword();
-        }
-      });
-
-      // Clic sur le bouton
-      loginBtn.addEventListener('click', checkPassword);
-    });
-
-    function checkPassword() {
+  function checkPassword() {
       const input = document.getElementById('password').value.trim();
       if (input === PASSWORD) {
         document.cookie = "access=true; path=/; max-age=86400";
@@ -238,10 +223,12 @@
       }
     }
 
-    // Vérifie si déjà connecté
-    if (document.cookie.includes('access=true')) {
-      showScanner();
-    }
+    // === VÉRIFICATION AU CHARGEMENT ===
+    window.onload = function() {
+      if (document.cookie.includes('access=true')) {
+        showScanner();
+      }
+    };
   </script>
 </body>
 </html>
