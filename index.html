@@ -187,15 +187,11 @@
   "INVITE-1491": "Mbane 50"
 };
 
-   // Vérifie si déjà connecté
-    if (localStorage.getItem('weddingAccess') === 'true') {
-      showScanner();
-    }
-
-    function checkPassword() {
-      const input = document.getElementById('password').value;
+   function checkPassword() {
+      const input = document.getElementById('password').value.trim();
       if (input === PASSWORD) {
-        localStorage.setItem('weddingAccess', 'true');
+        // Sauvegarde via cookie (fonctionne même en mode privé)
+        document.cookie = "weddingAccess=true; path=/; max-age=86400"; // 24h
         showScanner();
       } else {
         alert("Mot de passe incorrect !");
@@ -213,7 +209,7 @@
     function checkCode() {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get('code');
-      const result = document.getElementById('result');
+      const result = document.getElementById('result') || document.createElement('div');
 
       if (!code) {
         result.innerHTML = '<p class="invalid">Aucun code détecté</p>';
@@ -226,6 +222,16 @@
       } else {
         result.innerHTML = '<p class="invalid">✗ Code invalide ou expiré</p>';
       }
+
+      if (!document.getElementById('result')) {
+        document.getElementById('content').appendChild(result);
+      }
+    }
+
+    // === VÉRIFIE SI DÉJÀ CONNECTÉ (via cookie) ===
+    if (document.cookie.includes('weddingAccess=true')) {
+      showScanner();
+    }
   </script>
 </body>
 </html>
