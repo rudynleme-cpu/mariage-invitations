@@ -187,17 +187,27 @@
   "INVITE-1491": "Mbane 50"
 };
 
+   // Vérifie si déjà connecté
+    if (localStorage.getItem('weddingAccess') === 'true') {
+      showScanner();
+    }
+
     function checkPassword() {
       const input = document.getElementById('password').value;
       if (input === PASSWORD) {
-        document.getElementById('content').innerHTML = `
-          <div id="result">Scan en cours...</div>
-          <button onclick="window.location.href='?'">Scanner un autre</button>
-        `;
-        checkCode();
+        localStorage.setItem('weddingAccess', 'true');
+        showScanner();
       } else {
         alert("Mot de passe incorrect !");
       }
+    }
+
+    function showScanner() {
+      document.getElementById('content').innerHTML = `
+        <div id="result">Scan en cours...</div>
+        <button onclick="window.location.href='?'">Scanner un autre</button>
+      `;
+      checkCode();
     }
 
     function checkCode() {
@@ -216,31 +226,6 @@
       } else {
         result.innerHTML = '<p class="invalid">✗ Code invalide ou expiré</p>';
       }
-    }
-
-    // Auto-check si déjà connecté
-    if (localStorage.getItem('authorized') === 'true') {
-      document.getElementById('content').innerHTML = `
-        <div id="result">Scan en cours...</div>
-        <button onclick="window.location.href='?'">Scanner un autre</button>
-      `;
-      checkCode();
-    }
-
-    // Sauvegarde la connexion
-    function checkPassword() {
-      const input = document.getElementById('password').value;
-      if (input === PASSWORD) {
-        localStorage.setItem('authorized', 'true');
-        document.getElementById('content').innerHTML = `
-          <div id="result">Scan en cours...</div>
-          <button onclick="window.location.href='?'">Scanner un autre</button>
-        `;
-        checkCode();
-      } else {
-        alert("Mot de passe incorrect !");
-      }
-    }
   </script>
 </body>
 </html>
