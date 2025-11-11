@@ -187,11 +187,25 @@
   "INVITE-1491": "Mbane 50"
 };
 
-   function checkPassword() {
+  document.addEventListener('DOMContentLoaded', function() {
+      const loginBtn = document.getElementById('loginBtn');
+      const passwordInput = document.getElementById('password');
+
+      // Appui sur Entrée
+      passwordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          checkPassword();
+        }
+      });
+
+      // Clic sur le bouton
+      loginBtn.addEventListener('click', checkPassword);
+    });
+
+    function checkPassword() {
       const input = document.getElementById('password').value.trim();
       if (input === PASSWORD) {
-        // Sauvegarde via cookie (fonctionne même en mode privé)
-        document.cookie = "weddingAccess=true; path=/; max-age=86400"; // 24h
+        document.cookie = "access=true; path=/; max-age=86400";
         showScanner();
       } else {
         alert("Mot de passe incorrect !");
@@ -209,27 +223,23 @@
     function checkCode() {
       const urlParams = new URLSearchParams(window.location.search);
       const code = urlParams.get('code');
-      const result = document.getElementById('result') || document.createElement('div');
+      const result = document.getElementById('result');
 
       if (!code) {
         result.innerHTML = '<p class="invalid">Aucun code détecté</p>';
       } else if (invitations[code]) {
         result.innerHTML = `
-          <p class="valid">✓ INVITATION VALIDE</p>
+          <p class="valid">INVITATION VALIDE</p>
           <p class="name">${invitations[code]}</p>
           <p>Code: <strong>${code}</strong></p>
         `;
       } else {
-        result.innerHTML = '<p class="invalid">✗ Code invalide ou expiré</p>';
-      }
-
-      if (!document.getElementById('result')) {
-        document.getElementById('content').appendChild(result);
+        result.innerHTML = '<p class="invalid">Code invalide ou expiré</p>';
       }
     }
 
-    // === VÉRIFIE SI DÉJÀ CONNECTÉ (via cookie) ===
-    if (document.cookie.includes('weddingAccess=true')) {
+    // Vérifie si déjà connecté
+    if (document.cookie.includes('access=true')) {
       showScanner();
     }
   </script>
